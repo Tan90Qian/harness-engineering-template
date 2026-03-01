@@ -1,0 +1,28 @@
+{
+  "name": "{{project-name}}",
+  "version": "0.0.1",
+  "private": true,
+  "description": "{{project-description}}",
+  "scripts": {
+    "setup": "node scripts/setup.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --ext .ts,.tsx,.vue,.js,.cjs,.mjs",
+    "lint:fix": "eslint . --ext .ts,.tsx,.vue,.js,.cjs,.mjs --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,vue,js,json,md,yaml,yml}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,vue,js,json,md,yaml,yml}\"",
+    "test": "echo \"No tests configured yet\"",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.6.1",
+    "@commitlint/config-conventional": "^19.6.0",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.1.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.3"
+  }
+}

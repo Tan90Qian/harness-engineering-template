@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+
+env:
+  # Fix Corepack signature verification on some environments
+  COREPACK_INTEGRITY_KEYS: ''
+
+jobs:
+  quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ── Package Manager (uncomment one) ──
+
+      # pnpm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      # yarn (uncomment if using yarn)
+      # - name: Setup Yarn
+      #   run: corepack enable && corepack prepare yarn@stable --activate
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'  # change to 'npm' or 'yarn' as needed
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # ── Quality Gates ──
+
+      - name: Type check
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Format check
+        run: pnpm format:check
+
+      - name: Test
+        run: pnpm test
