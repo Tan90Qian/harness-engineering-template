@@ -1,54 +1,53 @@
-# Design Tokens
+# 设计规范（Design Tokens）
 
-> Customize these tokens for your project's visual design system.
-> AI will reference this file when generating UI components.
+> 按项目实际视觉设计修改下表。AI 生成 UI 时会参考此文件。
 
-## Colors
+## 颜色
 
-| Variable | Value | Usage |
-|----------|-------|-------|
-| --primary | #1890FF | Primary actions, links, buttons |
-| --success | #52C41A | Success states |
-| --warning | #FAAD14 | Warning states |
-| --danger | #FF4D4F | Error states, destructive actions |
-| --text-primary | #262626 | Primary text |
-| --text-secondary | #8C8C8C | Secondary text |
-| --text-disabled | #BFBFBF | Disabled text |
-| --bg-page | #F5F5F5 | Page background |
-| --bg-card | #FFFFFF | Card background |
-| --border | #E8E8E8 | Borders, dividers |
+| 变量 | 色值 | 用途 |
+|------|------|------|
+| --primary | #1890FF | 主色/链接/按钮 |
+| --success | #52C41A | 成功状态 |
+| --warning | #FAAD14 | 警告状态 |
+| --danger | #FF4D4F | 错误/危险操作 |
+| --text-primary | #262626 | 主要文字 |
+| --text-secondary | #8C8C8C | 次要文字 |
+| --text-disabled | #BFBFBF | 禁用文字 |
+| --bg-page | #F5F5F5 | 页面背景 |
+| --bg-card | #FFFFFF | 卡片背景 |
+| --border | #E8E8E8 | 分割线/边框 |
 
-## Typography
+## 字号
 
-| Level | Size | Usage |
-|-------|------|-------|
-| H1 | 24px | Page title |
-| H2 | 20px | Section title |
-| H3 | 16px | Card title |
-| Body | 14px | Body text |
-| Caption | 12px | Helper text |
+| 级别 | 大小 | 用途 |
+|------|------|------|
+| H1 | 24px | 页面标题 |
+| H2 | 20px | 区块标题 |
+| H3 | 16px | 卡片标题 |
+| 正文 | 14px | 正文内容 |
+| 辅助 | 12px | 辅助文字 |
 
-## Spacing
+## 间距
 
-| Level | Value | Usage |
-|-------|-------|-------|
-| xs | 4px | Tight spacing |
-| sm | 8px | Small gap |
-| md | 12px | Default |
-| lg | 16px | Large gap |
-| xl | 24px | Section gap |
+| 级别 | 大小 | 用途 |
+|------|------|------|
+| xs | 4px | 紧凑间距 |
+| sm | 8px | 小间距 |
+| md | 12px | 常规间距 |
+| lg | 16px | 大间距 |
+| xl | 24px | 区块间距 |
 
-## Border Radius
+## 圆角
 
-| Level | Value | Usage |
-|-------|-------|-------|
-| sm | 4px | Small elements |
-| md | 8px | Cards, inputs |
-| lg | 12px | Large cards |
-| full | 50% | Circles |
+| 级别 | 大小 | 用途 |
+|------|------|------|
+| sm | 4px | 小元素 |
+| md | 8px | 卡片/输入框 |
+| lg | 12px | 大卡片 |
+| full | 50% | 圆形 |
 
-## Shadows
+## 阴影
 
-| Level | Value | Usage |
-|-------|-------|-------|
-| card | 0 2px 8px rgba(0,0,0,0.06) | Cards, floating elements |
+| 级别 | 值 | 用途 |
+|------|-----|------|
+| 卡片 | 0 2px 8px rgba(0,0,0,0.06) | 卡片/浮层 |

@@ -2,22 +2,22 @@
 description: 修复一个 Bug
 ---
 
-1. **Understand the problem**
-   Confirm: which module? Reproduction steps? Expected behavior?
+1. **理解问题**
+   确认：哪个模块？复现步骤？期望行为？
 
-2. **Locate code**
-   Read relevant files
+2. **定位代码**
+   读取相关文件
 
-3. **Analyze root cause**
-   Explain the root cause before making any changes
+3. **分析根因**
+   修改代码前先说明根本原因
 
-4. **Minimal fix**
-   - Prefer upstream fixes over downstream workarounds
-   - Keep changes minimal
-   - Don't touch unrelated code
+4. **最小化修复**
+   - 优先上游修复，避免下游补丁
+   - 改动范围尽量小
+   - 不改不相关的代码
 
 // turbo
-5. **Type check**
+5. **类型检查**
 
-6. **Suggest tests**
-   Provide verification steps or test cases for the fix
+6. **建议测试**
+   给出验证修复的步骤或测试用例

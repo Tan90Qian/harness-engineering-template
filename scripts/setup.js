@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 
 /**
- * Harness Engineering Template - Interactive Setup
+ * Harness Engineering Template - 交互式初始化脚本
  *
- * Usage:
+ * 用法：
  *   node scripts/setup.js
  *
- * This script customizes the template for your project:
- *   1. Project name & description
- *   2. Package manager (pnpm / npm / yarn)
- *   3. Monorepo mode (optional: adds pnpm-workspace.yaml + turbo.json)
- *   4. Commit scopes (customizable per project)
- *   5. Initializes git + husky
+ * 此脚本为你的项目定制模板：
+ *   1. 项目名称和描述
+ *   2. 包管理器（pnpm / npm / yarn）
+ *   3. Monorepo 模式（可选：自动创建 pnpm-workspace.yaml + turbo.json）
+ *   4. 提交 scope（按项目自定义）
+ *   5. 初始化 git + husky
  */
 
 const fs = require('fs');
@@ -61,33 +61,33 @@ async function main() {
     output: process.stdout,
   });
 
-  console.log('\n🔧 Harness Engineering Template Setup\n');
+  console.log('\n🔧 Harness Engineering Template 初始化\n');
 
-  // 1. Basic info
-  const projectName = await ask(rl, 'Project name', 'my-project');
-  const projectDesc = await ask(rl, 'Description', 'A new project');
+  // 1. 基本信息
+  const projectName = await ask(rl, '项目名称', 'my-project');
+  const projectDesc = await ask(rl, '项目描述', '一个新项目');
 
-  // 2. Package manager
-  const pm = await ask(rl, 'Package manager (pnpm/npm/yarn)', 'pnpm');
+  // 2. 包管理器
+  const pm = await ask(rl, '包管理器 (pnpm/npm/yarn)', 'pnpm');
 
   // 3. Monorepo
-  const isMonorepo = (await ask(rl, 'Monorepo mode? (y/n)', 'n')).toLowerCase() === 'y';
+  const isMonorepo = (await ask(rl, '是否启用 Monorepo？(y/n)', 'n')).toLowerCase() === 'y';
   let workspacePackages = '';
   if (isMonorepo) {
-    workspacePackages = await ask(rl, 'Workspace packages glob', 'packages/*');
+    workspacePackages = await ask(rl, '工作空间包路径 glob', 'packages/*');
   }
 
-  // 4. Commit scopes
+  // 4. 提交 scope
   const defaultScopes = isMonorepo ? 'all,core,docs,ci,deps' : 'all,core,docs,ci,deps';
-  const scopesInput = await ask(rl, 'Commit scopes (comma-separated)', defaultScopes);
+  const scopesInput = await ask(rl, '提交 scope（逗号分隔）', defaultScopes);
   const scopes = scopesInput.split(',').map((s) => s.trim()).filter(Boolean);
 
-  // 5. Node version
-  const nodeVersion = await ask(rl, 'Minimum Node.js version', '18');
+  // 5. Node 版本
+  const nodeVersion = await ask(rl, '最低 Node.js 版本', '18');
 
   rl.close();
 
-  console.log('\n📦 Configuring project...\n');
+  console.log('\n📦 正在配置项目...\n');
 
   // ── Apply configuration ──
 
@@ -104,7 +104,7 @@ async function main() {
     pkg.engines = { ...pkg.engines, pnpm: '>=9.0.0' };
   }
 
-  // Adjust lint-staged commands for chosen package manager
+  // 根据包管理器调整 lint-staged 命令
   if (pm !== 'pnpm') {
     const lintStagedPath = path.join(ROOT, '.lintstagedrc.js');
     let content = fs.readFileSync(lintStagedPath, 'utf-8');
@@ -187,11 +187,11 @@ async function main() {
     writeJson(path.join(ROOT, 'package.json'), pkg);
   }
 
-  console.log('✅ Configuration complete.\n');
+  console.log('✅ 配置完成。\n');
 
   // ── Initialize ──
 
-  console.log('📦 Installing dependencies...\n');
+  console.log('📦 正在安装依赖...\n');
   const installCmd = pm === 'pnpm'
     ? 'pnpm install'
     : pm === 'yarn'
@@ -205,12 +205,12 @@ async function main() {
       run(installCmd);
     }
   } catch {
-    console.warn('⚠️  Install failed. You may need to run it manually.\n');
+    console.warn('⚠️  安装失败，请手动运行安装命令。\n');
   }
 
   // Git init
   if (!fs.existsSync(path.join(ROOT, '.git'))) {
-    console.log('\n🔧 Initializing git...\n');
+    console.log('\n🔧 正在初始化 Git...\n');
     run('git init');
     run('git add -A');
     run('git commit -m "chore: initial project setup from harness-engineering-template" --no-verify');
@@ -220,17 +220,17 @@ async function main() {
 
   console.log(`
 ╔══════════════════════════════════════════════════╗
-║  ✅ ${projectName} is ready!                     
-║                                                  
-║  Next steps:                                     
-║  1. Edit .ai-rules.md with your project rules    
-║  2. Edit docs/design/design-tokens.md            
-║  3. Start coding!                                
-║                                                  
-║  AI Setup (one-time per developer):              
-║  Tell Windsurf to create a Memory:               
-║  "当进入任何项目目录时，检查 .ai-rules.md，       
-║   如果存在则读取并遵循其中规则"                   
+║  ✅ ${projectName} 已就绪！
+║
+║  下一步：
+║  1. 编辑 .ai-rules.md 填写项目规则
+║  2. 编辑 docs/design/design-tokens.md 设计规范
+║  3. 开始编码！
+║
+║  AI 配置（每位开发者一次性操作）：
+║  在 Windsurf 中发送：
+║  "请创建 Memory：当进入任何项目目录时，
+║   检查 .ai-rules.md，存在则读取并遵循其中规则"
 ╚══════════════════════════════════════════════════╝
 `);
 }

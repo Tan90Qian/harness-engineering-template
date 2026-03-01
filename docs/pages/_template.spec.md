@@ -1,47 +1,47 @@
-# {Page Name} ({page-route})
+# {页面中文名} ({page-route})
 
-## Route
-- Path: /module/page
-- Auth required: Yes / No
+## 路由
+- 路径：/module/page
+- 需要登录：是 / 否
 
-## Layout
+## 布局结构
 
-### Header
-{Describe navigation bar / search / action bar}
+### 顶部区域
+{描述导航栏/搜索栏/操作栏}
 
-### Main Content
-{Describe the main content area structure}
+### 主体区域
+{描述主要内容区域的结构}
 
 ```
 ┌──────────────────────────┐
-│  Header / Nav            │
+│  导航栏 / 顶部           │
 ├──────────────────────────┤
 │                          │
-│  Main Content Area       │
+│  主体内容区域             │
 │                          │
 ├──────────────────────────┤
-│  Footer / Actions        │
+│  底部操作栏               │
 └──────────────────────────┘
 ```
 
-### Footer (if applicable)
-{Describe bottom action bar / buttons}
+### 底部区域（如有）
+{描述底部操作栏/按钮}
 
-## Components
-| Component | Description | Exists? |
-|-----------|-------------|---------|
-| ExampleCard | Card for displaying items | ❌ |
+## 组件清单
+| 组件 | 说明 | 是否已有 |
+|------|------|---------|
+| ExampleCard | 示例卡片 | ❌ |
 
-## API Dependencies
-| Endpoint | Method | Types | Description |
-|----------|--------|-------|-------------|
-| /example | GET | ExampleQuery → ExampleResponse | Fetch list |
+## 接口依赖
+| 接口 | 方法 | 类型定义 | 说明 |
+|------|------|---------|------|
+| /example | GET | ExampleQuery → ExampleResponse | 获取列表 |
 
-## Interactions
-- Click card → navigate to detail
-- Pull to refresh → reload page 1
-- Scroll to bottom → load next page
+## 交互说明
+- 点击卡片 → 跳转详情
+- 下拉刷新 → 重新请求第 1 页
+- 触底 → 请求下一页
 
-## Design Reference
-- See `docs/design/design-tokens.md`
-- Screenshots: place in same directory as `screenshot-{page}.png`
+## 设计参考
+- 参考 `docs/design/design-tokens.md`
+- 截图放在同目录下，命名 `screenshot-{page}.png`

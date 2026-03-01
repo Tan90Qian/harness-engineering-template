@@ -2,8 +2,8 @@
 module.exports = {
   extends: ['@commitlint/config-conventional'],
   rules: {
-    // Customize scopes for your project
-    // Run `node scripts/setup.js` to configure automatically
+    // 按项目实际自定义 scope
+    // 运行 `node scripts/setup.js` 自动配置
     'scope-enum': [
       2,
       'always',

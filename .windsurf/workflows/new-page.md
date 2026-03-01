@@ -3,21 +3,21 @@ description: 开发一个新页面
 ---
 
 // turbo
-1. **Context check**
-   - Read `docs/pages/{module}/{page}.spec.md` → create if missing
-   - Read types for this module → create if missing
-   - Read `docs/design/design-tokens.md` → use defaults if missing
+1. **上下文检查**
+   - 读取 `docs/pages/{module}/{page}.spec.md` → 不存在则引导创建
+   - 读取该模块的类型定义 → 不存在则引导创建
+   - 读取 `docs/design/design-tokens.md` → 不存在则使用默认值
 
-2. **Context complete → generate; incomplete → guide completion first**
+2. **上下文完整 → 直接生成；不完整 → 先引导补全再生成**
 
-3. **Generate page file**
-   - Follow project's UI framework conventions
-   - Import shared types from the central types package
-   - Handle loading/error/empty states
+3. **生成页面文件**
+   - 遵循项目 UI 框架约定
+   - 从共享类型包中导入类型
+   - 处理加载中/错误/空数据状态
 
-4. **Update routing config**
+4. **更新路由配置**
 
 // turbo
-5. **Run typecheck**
+5. **运行类型检查**
 
-6. **Output file list**
+6. **输出文件清单**

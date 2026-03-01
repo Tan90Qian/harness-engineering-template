@@ -7,12 +7,12 @@ on:
     branches: [main, master, develop]
 
 env:
-  # Fix Corepack signature verification on some environments
+  # 修复部分环境下 Corepack 签名验证失败问题
   COREPACK_INTEGRITY_KEYS: ''
 
 jobs:
   quality:
-    name: Code Quality
+    name: 代码质量检查
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -22,7 +22,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # ── Package Manager (uncomment one) ──
+      # ── 包管理器（根据项目取消注释） ──
 
       # pnpm
       - name: Setup pnpm
@@ -30,29 +30,29 @@ jobs:
         with:
           version: 9
 
-      # yarn (uncomment if using yarn)
-      # - name: Setup Yarn
+      # yarn（使用 yarn 时取消注释）
+      # - name: 配置 Yarn
       #   run: corepack enable && corepack prepare yarn@stable --activate
 
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'  # change to 'npm' or 'yarn' as needed
+          cache: 'pnpm'  # 按需改为 'npm' 或 'yarn'
 
-      - name: Install dependencies
+      - name: 安装依赖
         run: pnpm install --frozen-lockfile
 
-      # ── Quality Gates ──
+      # ── 质量门禁 ──
 
-      - name: Type check
+      - name: 类型检查
         run: pnpm typecheck
 
-      - name: Lint
+      - name: 代码规范检查
         run: pnpm lint
 
-      - name: Format check
+      - name: 格式检查
         run: pnpm format:check
 
-      - name: Test
+      - name: 单元测试
         run: pnpm test
