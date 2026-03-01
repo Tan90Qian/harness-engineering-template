@@ -1,7 +1,35 @@
 # Harness Engineering Template
 
 > 一个与业务无关、技术栈无关的前端/全栈工程化模板。
-> 提供 AI 辅助开发护栏、代码质量工具链、CI 流水线和结构化文档体系。
+> 提供 AI 辅助开发护栏、代码质量工具链、测试策略、CI 流水线和结构化文档体系。
+
+## Harness Engineering 核心组成部分
+
+“Harness Engineering”的本质是为 AI 辅助开发装上护栏（harness = 缰绳/护套），确保 AI 产出可靠、一致、可维护的代码。
+
+它由以下 **7 个核心组成部分** 构成，按优先级从高到低：
+
+| 优先级 | 组成部分 | 价值 | 本模板对应 |
+|--------|---------|------|----------|
+| **P0** | **类型安全** | AI 写错字段/类型 → 编译立即报错，是 AI 工程化的基石 | `tsconfig.json`（strict mode） |
+| **P0** | **AI 上下文规则** | 让 AI 理解项目规范，避免每次重复说明 | `.ai-rules.md` + Windsurf Memory |
+| **P0** | **代码质量工具链** | 统一代码风格，自动拦截不规范代码 | ESLint + Prettier + commitlint + Husky |
+| **P1** | **结构化文档** | AI 生成 UI 时有据可依，避免猜测布局和样式 | Design Tokens + Page Spec 模板 |
+| **P1** | **CI 流水线** | 自动执行质量门禁，AI 无法绕过 | GitHub Actions CI |
+| **P1** | **自动化测试** | 以机器速度验证 AI 产出的正确性 | `docs/testing-strategy.md` 测试策略指南 |
+| **P2** | **文档同步防护** | 防止上下文过期导致 AI 生成偏差 | SYNC_MAP + CI 检查 + PR 模板 |
+| **P2** | **AI 行为引导** | 引导 AI 按标准流程开发，信息不足时提醒而非猜测 | Windsurf Workflows |
+
+### 各组成部分的价值说明
+
+- **类型安全**：最高优先级。TypeScript strict 是 AI 工程化的基石——类型正确 → 代码大概率正确；类型错误 → 代码一定有问题。
+- **AI 上下文规则**：最高优先级。没有 `.ai-rules.md`，AI 每次都在猜测项目规范，生成结果不可控。
+- **代码质量工具链**：AI 生成的代码也必须符合团队规范，lint-staged + Husky 确保每次提交都经过检查。
+- **结构化文档**：花 15 分钟写 Page Spec，比花 30 分钟跟 AI 来回对话调整高效得多。
+- **CI 流水线**：自动执行 typecheck + lint + test，是质量的最后一道防线。
+- **自动化测试**：AI 让代码生成速度提升数倍，但引入缺陷的速度也同步加快，自动化测试是唯一能以同等速度验证正确性的手段。
+- **文档同步防护**：解决渐进性退化问题——代码变了文档没跟上，AI 效果逐渐下降。
+- **AI 行为引导**：Workflow 确保 AI 按标准流程开发，不跳步、不猜测。
 
 ## 为什么需要这个模板？
 
@@ -18,6 +46,7 @@
 | 缺少质量门禁 | GitHub Actions CI — typecheck + lint + test |
 | AI 生成 UI 风格不一致 | `docs/design/design-tokens.md` — 设计规范 |
 | AI 不知道页面需求 | `docs/pages/_template.spec.md` — Page Spec 模板 |
+| AI 产出无法快速验证 | `docs/testing-strategy.md` — 测试策略指南 |
 | 文档与代码逐渐脱节 | `docs/SYNC_MAP.md` + CI 自动检测 + PR 清单 |
 
 ## 快速开始
@@ -102,6 +131,7 @@ harness-engineering-template/
 │
 ├── docs/
 │   ├── SYNC_MAP.md             # 🔗 文档-代码同步映射表
+│   ├── testing-strategy.md     # 🧪 测试策略指南
 │   ├── design/
 │   │   └── design-tokens.md        # 🎨 设计规范 Token
 │   └── pages/
