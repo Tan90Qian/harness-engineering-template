@@ -18,6 +18,7 @@
 | 缺少质量门禁 | GitHub Actions CI — typecheck + lint + test |
 | AI 生成 UI 风格不一致 | `docs/design/design-tokens.md` — 设计规范 |
 | AI 不知道页面需求 | `docs/pages/_template.spec.md` — Page Spec 模板 |
+| 文档与代码逐渐脱节 | `docs/SYNC_MAP.md` + CI 自动检测 + PR 清单 |
 
 ## 快速开始
 
@@ -89,8 +90,9 @@ harness-engineering-template/
 ├── package.json                    # 📦 项目配置
 │
 ├── .github/
-│   └── workflows/
-│       └── ci.yml                  # 🚀 CI 流水线（GitHub Actions）
+│   ├── workflows/
+│   │   └── ci.yml                  # 🚀 CI 流水线（含文档同步检查）
+│   └── PULL_REQUEST_TEMPLATE.md # 📋 PR 模板（含文档检查清单）
 │
 ├── .windsurf/
 │   └── workflows/
@@ -99,6 +101,7 @@ harness-engineering-template/
 │       └── fix-bug.md              # 🐛 修复 Bug 工作流
 │
 ├── docs/
+│   ├── SYNC_MAP.md             # 🔗 文档-代码同步映射表
 │   ├── design/
 │   │   └── design-tokens.md        # 🎨 设计规范 Token
 │   └── pages/
@@ -106,14 +109,15 @@ harness-engineering-template/
 │       └── .gitkeep
 │
 ├── scripts/
-│   └── setup.js                    # ⚙️  交互式初始化脚本
+│   ├── setup.js                    # ⚙️  交互式初始化脚本
+│   └── doc-sync-check.js           # 🔍 文档同步检查脚本
 │
 ├── README.md                       # 📖 本文件
 ├── CONTRIBUTING.md                 # 🤝 贡献指南
 └── LICENSE                         # ⚖️  MIT 许可
 ```
 
-## 三层护栏架构
+## 四层护栏架构
 
 ```
 ┌─────────────────────────────────────────────────┐
@@ -135,7 +139,56 @@ harness-engineering-template/
 │  new-feature.md     → 功能开发标准流程           │
 │  new-page.md        → 页面生成标准流程           │
 │  fix-bug.md         → Bug 修复标准流程           │
+├─────────────────────────────────────────────────┤
+│  Layer 4: 文档同步防护（防止上下文过期）       │
+│                                                 │
+│  docs/SYNC_MAP.md   → 代码-文档声明式映射      │
+│  doc-sync-check.js  → CI 自动检测文档新鲜度    │
+│  PR 模板            → 强制文档确认清单          │
+│  Workflow 步骤      → AI 开发时强制文档同步    │
 └─────────────────────────────────────────────────┘
+```
+
+## 文档-代码同步机制
+
+**核心问题**：代码变了但文档没跟上 → AI 读到过期上下文 → 生成代码偏离实际。
+
+### 四层防护机制
+
+| 层级 | 机制 | 触发时机 | 强度 |
+|------|------|---------|------|
+| L1 | `docs/SYNC_MAP.md` 声明式映射 | 文件创建时 | 约定 |
+| L2 | Workflow 强制步骤 | AI 开发时 | 引导 |
+| L3 | PR 模板检查清单 | 代码 Review 时 | 人工 |
+| L4 | `doc-sync-check.js` CI 门禁 | MR 合并前 | 自动 |
+
+### SYNC_MAP 工作原理
+
+`docs/SYNC_MAP.md` 声明代码与文档的对应关系：
+
+```markdown
+| 代码路径 | 对应文档 | 同步级别 |
+|----------|---------|----------|
+| `src/pages/**/*` | `docs/pages/*.spec.md` | strict |
+| `src/types/**/*.ts` | `docs/design/design-tokens.md` | warn |
+```
+
+**同步级别**：
+- **strict**：代码变了文档没变 → CI 报错，阻止合并
+- **warn**：CI 警告，不阻止但会在 PR 中提示
+- **info**：仅 AI 开发时提醒
+
+### 手动运行检查
+
+```bash
+# 检查当前分支 vs main
+node scripts/doc-sync-check.js
+
+# 检查最近一次提交
+node scripts/doc-sync-check.js --base=HEAD~1
+
+# strict 模式（不通过时退出码非零）
+node scripts/doc-sync-check.js --strict
 ```
 
 ## 自定义指南

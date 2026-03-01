@@ -56,3 +56,7 @@ jobs:
 
       - name: 单元测试
         run: pnpm test
+
+      - name: 文档同步检查
+        run: node scripts/doc-sync-check.js --strict
+        if: github.event_name == 'pull_request'
