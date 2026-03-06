@@ -49,59 +49,74 @@
 | AI 产出无法快速验证 | `docs/testing-strategy.md` — 测试策略指南 |
 | 文档与代码逐渐脱节 | `docs/SYNC_MAP.md` + CI 自动检测 + PR 清单 |
 
-## 快速开始
+## 🚀 快速开始
 
-### 1. 使用模板
+### 5 分钟上手
 
 ```bash
-# 方式一：GitHub Template（推荐）
+# 1. 使用模板（GitHub Template 推荐）
 # 点击 GitHub 页面上的 "Use this template" 按钮
 
-# 方式二：手动克隆
-git clone https://github.com/YOUR_USERNAME/harness-engineering-template.git my-project
-cd my-project
-rm -rf .git
-```
-
-### 2. 运行初始化脚本
-
-```bash
+# 2. 初始化项目
 node scripts/setup.js
+
+# 3. 配置 AI（一次性，30 秒）
+# 在 Windsurf 中发送：
+# "请创建一个 Windsurf Memory，内容为：
+# 当进入任何项目目录工作时，首先检查项目根目录是否存在 .ai-rules.md 文件。
+# 如果存在，必须在开始工作前读取并严格遵循其中的规则。"
 ```
 
-脚本会交互式询问：
+**详细指南**：见 `docs/QUICK_START.md`（10 分钟）
 
-| 配置项 | 说明 | 默认值 |
-|--------|------|--------|
-| Project name | 项目名称（写入 package.json） | `my-project` |
-| Description | 项目描述 | `A new project` |
-| Package manager | pnpm / npm / yarn | `pnpm` |
-| Monorepo mode | 是否启用 Monorepo（自动创建 turbo.json） | `n` |
-| Commit scopes | 提交 scope 白名单 | `all,core,docs,ci,deps` |
-| Node version | 最低 Node.js 版本 | `18` |
+### 文档导航
 
-脚本会自动：
-- 替换所有占位符（项目名、描述等）
-- 配置 commitlint scope
-- 调整 CI 流水线的包管理器
-- 安装依赖
-- 初始化 Git 仓库
+| 文档 | 阅读时间 | 内容 |
+|------|---------|------|
+| **README.md** | 5 分钟 | 项目概览 + Harness Engineering 核心概念 |
+| **docs/QUICK_START.md** | 10 分钟 | 环境配置 + 第一个功能 + Workflows 使用示例 |
+| **docs/DEVELOPMENT.md** | 30 分钟 | 完整开发流程 + 类型系统 + 文档同步 |
+| **CONTRIBUTING.md** | 10 分钟 | 分支规范 + 提交规范 + MR 流程 |
+| **docs/ARCHITECTURE.md** | 按需 | 架构设计 + 技术选型 |
+| **docs/testing-strategy.md** | 按需 | 测试策略指南 |
 
-### 3. 配置 AI 辅助开发
+### AI 辅助开发
 
-每位开发者需**一次性**在 Windsurf 中配置 Memory（约 30 秒）：
+#### Workflows（工作流）
 
-```
-在 Windsurf 对话中发送：
-"请创建一个 Windsurf Memory，内容为：
-当进入任何项目目录工作时，首先检查项目根目录是否存在 .ai-rules.md 文件。
-如果存在，必须在开始工作前读取并严格遵循其中的规则。"
-```
+| 命令 | 用途 | 适用场景 |
+|------|------|---------|
+| `/new-feature` | 开发新功能 | 从类型定义 → Page Spec → 代码 → 测试的完整流程 |
+| `/new-page` | 开发新页面 | 创建页面，自动生成 Page Spec + 页面代码 + 更新路由 |
+| `/new-component` | 创建业务组件 | 创建复杂业务组件，生成 Component Spec + 组件代码 |
+| `/complete` | 完善现有实现 | 对比 Spec 文档补全缺失功能，确保实现完整度 |
+| `/fix-bug` | 修复 Bug | 定位根因 → 最小修复 → 回归测试 |
+| `/git-commit` | 规范提交 | 生成符合 Conventional Commits 的提交信息 |
+| `/health-check` | 工程质量评分 | 检查文档完整性 + 代码规范 + AI 工程化健壮性 |
+| `/doc-workflow` | 文档工作流 | 根据当前文档模式（单人/团队）执行对应的文档检查 |
+| `/switch-to-team-mode` | 切换团队模式 | 一键切换到团队模式（文档先行变为强制，不可逆） |
 
-配置后效果：
-- ✅ 任何包含 `.ai-rules.md` 的项目都会自动加载工程规则
-- ✅ 不受 AI 插件覆写 `.windsurfrules` 的影响
-- ✅ 一次配置，所有项目通用
+#### Skills（技能）
+
+AI 自动调用的技能，无需手动触发：
+
+| Skill | 用途 | 何时调用 |
+|-------|------|---------|
+| `check-context` | 上下文检查 | 开发前检查类型定义、Page Spec、设计规范是否完整 |
+| `create-type-definition` | 创建类型定义 | 在 `shared/types/` 中创建业务实体类型 |
+| `create-page-spec` | 创建 Page Spec | 基于模板生成页面需求文档 |
+| `generate-spec-from-figma` | Figma 自动填充 | 调用 Figma MCP 自动提取设计数据并填充 Spec |
+
+#### 文档模式
+
+项目支持两种文档模式（通过 `docs/.doc-mode` 配置）：
+
+| 模式 | 说明 | 文档要求 |
+|------|------|---------|
+| **单人模式**（默认） | 适合个人项目或小团队 | 文档建议但非强制 |
+| **团队模式** | 适合多人协作 | 文档先行强制要求，提交前自动检查 |
+
+**切换到团队模式**：`/switch-to-team-mode`（不可逆）
 
 ## 模板结构
 
@@ -125,17 +140,20 @@ harness-engineering-template/
 │
 ├── .windsurf/
 │   ├── skills/
-│   │   ├── check-context.md        # 🔍 上下文完整性检查
-│   │   ├── create-page-spec.md     # 📄 生成 Page Spec 模板
-│   │   └── create-type-definition.md # 📐 生成类型定义模板
+│   │   ├── check-context.md           # 🔍 上下文完整性检查
+│   │   ├── create-page-spec.md        # 📄 生成 Page Spec 模板
+│   │   ├── create-type-definition.md  # 📐 生成类型定义模板
+│   │   └── generate-spec-from-figma.md # 🎨 Figma MCP 自动填充
 │   └── workflows/
-│       ├── new-feature.md          # 🆕 开发新功能工作流
-│       ├── new-page.md             # 📄 开发新页面工作流
-│       ├── fix-bug.md              # 🐛 修复 Bug 工作流
-│       ├── git-commit.md           # 📝 规范提交信息工作流
-│       ├── health-check.md         # 📊 健壮性检查工作流
-│       ├── doc-workflow.md         # 📋 文档工作流
-│       └── switch-to-team-mode.md  # 🏢 切换团队模式工作流
+│       ├── new-feature.md             # 🆕 开发新功能工作流
+│       ├── new-page.md                # 📄 开发新页面工作流
+│       ├── new-component.md           # 🧩 创建业务组件工作流
+│       ├── complete.md                # ✅ 完善现有实现工作流
+│       ├── fix-bug.md                 # 🐛 修复 Bug 工作流
+│       ├── git-commit.md              # 📝 规范提交信息工作流
+│       ├── health-check.md            # 📊 健壮性检查工作流
+│       ├── doc-workflow.md            # 📋 文档工作流
+│       └── switch-to-team-mode.md     # 🏢 切换团队模式工作流
 │
 ├── docs/
 │   ├── .doc-mode                   # 📋 文档模式标记（solo/team）

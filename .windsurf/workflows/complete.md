@@ -26,25 +26,41 @@ description: 完善现有实现（对比 spec 文档补全缺失功能）
 ### 1. 检查 spec 文档和现有实现
 
 根据用户指定的 spec 类型：
-- 读取对应的 spec 文档，提取组件清单 / 接口列表 / 功能需求
-- 检查代码中的实际实现
-- **输出**：缺失功能/组件清单（逐项列出 ✅ 已实现 / ❌ 缺失）
+
+**页面 Spec** (`docs/pages/*.spec.md`):
+- 读取 spec 查看组件清单、接口依赖、交互说明
+- 检查 `packages/uni-app/src/pages/` 或 `packages/web-admin/src/pages/` 实现
+- 检查对应组件目录
+
+**功能 Spec** (`docs/features/*.spec.md`):
+- 读取 spec 查看功能需求和组件清单
+- 检查相关模块实现
+- 检查集成点是否完整
+
+**API Spec**:
+- 读取 `packages/shared/types/api-routes.ts` 路由索引
+- 检查 `packages/bff/src/modules/` 对应模块
+- 检查类型定义和 DTO
+
+**输出**: 缺失功能/组件清单（逐项列出 ✅ 已实现 / ❌ 缺失）
 
 ### 2. 分析缺失功能的实现方式
 
 按依赖顺序规划实现策略：
-1. **类型定义** — 在共享类型目录中补充
-2. **数据/工具** — 创建数据文件、工具函数、Hook
+1. **类型定义** — 在 `packages/shared/types/` 中补充
+2. **数据/工具** — 创建工具函数、Hook、Store
 3. **核心组件** — 实现主要功能组件
 4. **集成** — 在现有代码中集成新功能
 
 ### 3. 创建缺失的实现
 
 按照步骤 2 的顺序逐一实现：
-- 遵循项目已有的代码风格和模式
-- 从共享类型包导入类型，不自行定义
+- 从 `@cloud-garage/shared/types` 导入类型，不自行定义
+- uni-app 页面使用 Vue 3 Composition API + Pinia
+- web-admin 页面使用 React + Ant Design + TanStack Query
+- BFF 模块使用 Nest.js + Swagger 装饰器
 - 处理加载中 / 错误 / 空数据状态
-- 确保类型安全
+- 跨端差异使用条件编译（`#ifdef`）
 
 ### 4. 更新 spec 文档
 
@@ -53,7 +69,8 @@ description: 完善现有实现（对比 spec 文档补全缺失功能）
 ```markdown
 | 组件 | 说明 | 是否已有 |
 |------|------|---------|
-| ExampleCard | 卡片组件 | ✅ |
+| CarCard | 车辆卡片 | ✅ |
+| FilterBar | 筛选栏 | ✅ |
 | DetailModal | 详情弹窗 | ✅ |
 ```
 
@@ -72,7 +89,11 @@ description: 完善现有实现（对比 spec 文档补全缺失功能）
 
 ### 6. 类型检查
 
-运行项目的 typecheck 命令，确保无类型错误。
+```bash
+pnpm typecheck
+```
+
+确保无类型错误。
 
 ### 7. 输出完成总结
 
@@ -88,4 +109,5 @@ description: 完善现有实现（对比 spec 文档补全缺失功能）
 /complete 车辆列表页面的筛选和详情弹窗
 /complete 订单状态流转功能
 /complete 商家认证表单组件
+/complete BFF 车辆模块的搜索和收藏接口
 ```
