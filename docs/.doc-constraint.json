@@ -1,0 +1,15 @@
+{
+  "mode": "solo",
+  "constraints": {
+    "page-spec-required": false,
+    "design-doc-required": false,
+    "architecture-doc-on-refactor": false,
+    "component-doc-required": false,
+    "storybook-required": false,
+    "pre-commit-doc-check": false
+  },
+  "description": {
+    "solo": "单人模式：文档建议但非强制，Page Spec 推荐创建",
+    "team": "团队模式：文档先行强制，提交前自动检查文档完整性"
+  }
+}

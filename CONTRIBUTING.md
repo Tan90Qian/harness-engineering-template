@@ -71,6 +71,10 @@ CI 流水线额外检查：
 - `/new-feature` — 开发新功能（从 spec 到测试）
 - `/new-page` — 开发新页面
 - `/fix-bug` — 修复 Bug
+- `/git-commit` — 编写规范的 git commit 信息（英文 Header + 中文 Body）
+- `/health-check` — 运行 AI 工程化健壮性检查（评分 + 待改进项）
+- `/doc-workflow` — 文档工作流（支持单人/团队模式）
+- `/switch-to-team-mode` — 切换到团队模式（不可逆）
 
 ### Page Spec
 

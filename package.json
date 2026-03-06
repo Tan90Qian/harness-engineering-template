@@ -11,6 +11,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,vue,js,json,md,yaml,yml}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,vue,js,json,md,yaml,yml}\"",
     "test": "echo \"No tests configured yet\"",
+    "health-check": "node scripts/ai-health-check.cjs",
+    "health-check:json": "node scripts/ai-health-check.cjs --json",
     "prepare": "husky"
   },
   "devDependencies": {

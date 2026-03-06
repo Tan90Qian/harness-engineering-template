@@ -120,27 +120,42 @@ harness-engineering-template/
 │
 ├── .github/
 │   ├── workflows/
-│   │   └── ci.yml                  # 🚀 CI 流水线（含文档同步检查）
-│   └── PULL_REQUEST_TEMPLATE.md # 📋 PR 模板（含文档检查清单）
+│   │   └── ci.yml                  # 🚀 CI 流水线（含文档同步+健壮性检查）
+│   └── PULL_REQUEST_TEMPLATE.md    # 📋 PR 模板（含文档检查清单）
 │
 ├── .windsurf/
+│   ├── skills/
+│   │   ├── check-context.md        # 🔍 上下文完整性检查
+│   │   ├── create-page-spec.md     # 📄 生成 Page Spec 模板
+│   │   └── create-type-definition.md # 📐 生成类型定义模板
 │   └── workflows/
 │       ├── new-feature.md          # 🆕 开发新功能工作流
 │       ├── new-page.md             # 📄 开发新页面工作流
-│       └── fix-bug.md              # 🐛 修复 Bug 工作流
+│       ├── fix-bug.md              # 🐛 修复 Bug 工作流
+│       ├── git-commit.md           # 📝 规范提交信息工作流
+│       ├── health-check.md         # 📊 健壮性检查工作流
+│       ├── doc-workflow.md         # 📋 文档工作流
+│       └── switch-to-team-mode.md  # 🏢 切换团队模式工作流
 │
 ├── docs/
-│   ├── SYNC_MAP.md             # 🔗 文档-代码同步映射表
-│   ├── testing-strategy.md     # 🧪 测试策略指南
+│   ├── .doc-mode                   # 📋 文档模式标记（solo/team）
+│   ├── .doc-constraint.json        # 📋 文档约束配置
+│   ├── SYNC_MAP.md                 # 🔗 文档-代码同步映射表
+│   ├── testing-strategy.md         # 🧪 测试策略指南
 │   ├── design/
 │   │   └── design-tokens.md        # 🎨 设计规范 Token
-│   └── pages/
-│       ├── _template.spec.md       # 📋 页面需求模板
-│       └── .gitkeep
+│   ├── pages/
+│   │   ├── _template.spec.md       # 📋 页面需求模板（含跨端差异）
+│   │   └── .gitkeep
+│   └── templates/
+│       ├── api-routes.ts.md        # 📐 API 路由索引模板
+│       └── status-machine.ts.md    # 📐 状态机定义模板
 │
 ├── scripts/
-│   ├── setup.js                    # ⚙️  交互式初始化脚本
-│   └── doc-sync-check.js           # 🔍 文档同步检查脚本
+│   ├── setup.js                    # ⚙️  交互式初始化脚本（含 Monorepo 骨架）
+│   ├── doc-sync-check.js           # 🔍 文档同步检查脚本
+│   ├── ai-health-check.cjs         # 📊 AI 工程化健壮性自动检查
+│   └── manage-doc-constraint.js    # 📋 文档模式管理脚本
 │
 ├── README.md                       # 📖 本文件
 ├── CONTRIBUTING.md                 # 🤝 贡献指南
@@ -240,6 +255,26 @@ description: 工作流简要描述
 2. 步骤二
 // turbo
 3. 可自动执行的步骤
+```
+
+### 运行工程质量检查
+
+```bash
+# 7 维度健壮性评分
+pnpm health-check
+
+# JSON 格式输出（CI 集成）
+pnpm health-check:json
+```
+
+### 切换文档模式
+
+```bash
+# 查看当前模式
+node scripts/manage-doc-constraint.js
+
+# 切换到团队模式（不可逆）
+node scripts/manage-doc-constraint.js --switch-to-team
 ```
 
 ### 扩展为 Monorepo

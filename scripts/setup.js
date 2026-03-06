@@ -185,6 +185,61 @@ async function main() {
     pkg.devDependencies = pkg.devDependencies || {};
     pkg.devDependencies.turbo = '^2.3.3';
     writeJson(path.join(ROOT, 'package.json'), pkg);
+
+    // Create shared package skeleton
+    const sharedDir = path.join(ROOT, 'packages', 'shared');
+    const dirs = [
+      path.join(sharedDir, 'types'),
+      path.join(sharedDir, 'utils'),
+      path.join(sharedDir, 'constants'),
+    ];
+    for (const d of dirs) {
+      fs.mkdirSync(d, { recursive: true });
+    }
+
+    // shared/types/index.ts
+    fs.writeFileSync(
+      path.join(sharedDir, 'types', 'index.ts'),
+      `// 全栈共享类型统一导出\n// 在此导出所有类型定义，确保全端 import 一致\n\nexport {};\n`,
+      'utf-8',
+    );
+
+    // shared/utils/index.ts
+    fs.writeFileSync(
+      path.join(sharedDir, 'utils', 'index.ts'),
+      `// 共享工具函数统一导出\n\nexport {};\n`,
+      'utf-8',
+    );
+
+    // shared/constants/index.ts
+    fs.writeFileSync(
+      path.join(sharedDir, 'constants', 'index.ts'),
+      `// 共享常量统一导出\n\nexport {};\n`,
+      'utf-8',
+    );
+
+    // shared/package.json
+    const sharedPkg = {
+      name: `@${projectName}/shared`,
+      version: '0.0.1',
+      private: true,
+      main: 'types/index.ts',
+      types: 'types/index.ts',
+    };
+    writeJson(path.join(sharedDir, 'package.json'), sharedPkg);
+
+    // shared/tsconfig.json
+    const sharedTsConfig = {
+      extends: '../../tsconfig.json',
+      compilerOptions: {
+        rootDir: '.',
+        outDir: './dist',
+      },
+      include: ['types/**/*', 'utils/**/*', 'constants/**/*'],
+    };
+    writeJson(path.join(sharedDir, 'tsconfig.json'), sharedTsConfig);
+
+    console.log('  ✅ 已创建 packages/shared/ 骨架（types/utils/constants）');
   }
 
   console.log('✅ 配置完成。\n');

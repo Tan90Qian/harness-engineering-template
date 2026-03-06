@@ -60,3 +60,6 @@ jobs:
       - name: 文档同步检查
         run: node scripts/doc-sync-check.js --strict
         if: github.event_name == 'pull_request'
+
+      - name: AI 工程化健壮性检查
+        run: node scripts/ai-health-check.cjs --strict
