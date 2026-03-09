@@ -18,7 +18,7 @@
 | **P1** | **CI 流水线** | 自动执行质量门禁，AI 无法绕过 | GitHub Actions CI |
 | **P1** | **自动化测试** | 以机器速度验证 AI 产出的正确性 | `docs/testing-strategy.md` 测试策略指南 |
 | **P2** | **文档同步防护** | 防止上下文过期导致 AI 生成偏差 | SYNC_MAP + CI 检查 + PR 模板 |
-| **P2** | **AI 行为引导** | 引导 AI 按标准流程开发，信息不足时提醒而非猜测 | Windsurf Workflows |
+| **P2** | **AI 行为引导** | 引导 AI 按标准流程开发，信息不足时提醒而非猜测 | Windsurf Skills |
 
 ### 各组成部分的价值说明
 
@@ -29,7 +29,7 @@
 - **CI 流水线**：自动执行 typecheck + lint + test，是质量的最后一道防线。
 - **自动化测试**：AI 让代码生成速度提升数倍，但引入缺陷的速度也同步加快，自动化测试是唯一能以同等速度验证正确性的手段。
 - **文档同步防护**：解决渐进性退化问题——代码变了文档没跟上，AI 效果逐渐下降。
-- **AI 行为引导**：Workflow 确保 AI 按标准流程开发，不跳步、不猜测。
+- **AI 行为引导**：Skills 确保 AI 按标准流程开发，不跳步、不猜测。
 
 ## 为什么需要这个模板？
 
@@ -74,7 +74,7 @@ node scripts/setup.js
 | 文档 | 阅读时间 | 内容 |
 |------|---------|------|
 | **README.md** | 5 分钟 | 项目概览 + Harness Engineering 核心概念 |
-| **docs/QUICK_START.md** | 10 分钟 | 环境配置 + 第一个功能 + Workflows 使用示例 |
+| **docs/QUICK_START.md** | 10 分钟 | 环境配置 + 第一个功能 + Skills 使用示例 |
 | **docs/DEVELOPMENT.md** | 30 分钟 | 完整开发流程 + 类型系统 + 文档同步 |
 | **CONTRIBUTING.md** | 10 分钟 | 分支规范 + 提交规范 + MR 流程 |
 | **docs/ARCHITECTURE.md** | 按需 | 架构设计 + 技术选型 |
@@ -82,30 +82,33 @@ node scripts/setup.js
 
 ### AI 辅助开发
 
-#### Workflows（工作流）
+#### Skills（Skill-only）
 
-| 命令 | 用途 | 适用场景 |
-|------|------|---------|
-| `/new-feature` | 开发新功能 | 从类型定义 → Page Spec → 代码 → 测试的完整流程 |
-| `/new-page` | 开发新页面 | 创建页面，自动生成 Page Spec + 页面代码 + 更新路由 |
-| `/new-component` | 创建业务组件 | 创建复杂业务组件，生成 Component Spec + 组件代码 |
-| `/complete` | 完善现有实现 | 对比 Spec 文档补全缺失功能，确保实现完整度 |
-| `/fix-bug` | 修复 Bug | 定位根因 → 最小修复 → 回归测试 |
-| `/git-commit` | 规范提交 | 生成符合 Conventional Commits 的提交信息 |
-| `/health-check` | 工程质量评分 | 检查文档完整性 + 代码规范 + AI 工程化健壮性 |
-| `/doc-workflow` | 文档工作流 | 根据当前文档模式（单人/团队）执行对应的文档检查 |
-| `/switch-to-team-mode` | 切换团队模式 | 一键切换到团队模式（文档先行变为强制，不可逆） |
+本模板不保留 Workflow 入口，统一通过 Skills 组织 AI 开发流程。
 
-#### Skills（技能）
-
-AI 自动调用的技能，无需手动触发：
+最小可落地 Skill 列表：
 
 | Skill | 用途 | 何时调用 |
 |-------|------|---------|
 | `check-context` | 上下文检查 | 开发前检查类型定义、Page Spec、设计规范是否完整 |
-| `create-type-definition` | 创建类型定义 | 在 `shared/types/` 中创建业务实体类型 |
-| `create-page-spec` | 创建 Page Spec | 基于模板生成页面需求文档 |
-| `generate-spec-from-figma` | Figma 自动填充 | 调用 Figma MCP 自动提取设计数据并填充 Spec |
+| `create-type-definition` | 创建类型定义 | 新增或变更模块数据结构时 |
+| `create-page-spec` | 创建 Page Spec | 页面开发前补齐规格文档 |
+| `create-component-spec` | 创建 Component Spec | 组件开发前补齐规格文档 |
+| `create-react-page` | 生成 React 页面 | React 技术栈页面实现 |
+| `create-uni-page` | 生成 uni-app 页面 | uni-app 技术栈页面实现 |
+| `create-bff-module` | 生成 BFF 模块 | BFF 接口模块初始化 |
+| `complete-implementation` | 补全现有实现 | 对照 spec 查漏补缺 |
+| `fix-bug` | 修复 Bug | 根因定位与最小修复 |
+| `health-check` | 工程质量评分 | 检查文档完整性 + 代码规范 + AI 工程化健壮性 |
+
+#### 通用开发到上线流程（时间线模板）
+
+1. 开发：需求拆解、类型定义、规格补齐。
+2. 调试：本地联调，确认接口契约与端行为一致。
+3. 测试：运行单测/集成测试并完成冒烟。
+4. 构建：按目标环境构建，产物打版本标识。
+5. 部署：先 staging 验证，再 production 发布。
+6. 上线：发布后观察窗口监控，异常触发回滚预案。
 
 #### 文档模式
 
@@ -139,21 +142,17 @@ harness-engineering-template/
 │   └── PULL_REQUEST_TEMPLATE.md    # 📋 PR 模板（含文档检查清单）
 │
 ├── .windsurf/
-│   ├── skills/
-│   │   ├── check-context.md           # 🔍 上下文完整性检查
-│   │   ├── create-page-spec.md        # 📄 生成 Page Spec 模板
-│   │   ├── create-type-definition.md  # 📐 生成类型定义模板
-│   │   └── generate-spec-from-figma.md # 🎨 Figma MCP 自动填充
-│   └── workflows/
-│       ├── new-feature.md             # 🆕 开发新功能工作流
-│       ├── new-page.md                # 📄 开发新页面工作流
-│       ├── new-component.md           # 🧩 创建业务组件工作流
-│       ├── complete.md                # ✅ 完善现有实现工作流
-│       ├── fix-bug.md                 # 🐛 修复 Bug 工作流
-│       ├── git-commit.md              # 📝 规范提交信息工作流
-│       ├── health-check.md            # 📊 健壮性检查工作流
-│       ├── doc-workflow.md            # 📋 文档工作流
-│       └── switch-to-team-mode.md     # 🏢 切换团队模式工作流
+│   └── skills/
+│       ├── check-context/SKILL.md        # 🔍 上下文完整性检查
+│       ├── create-type-definition/SKILL.md
+│       ├── create-page-spec/SKILL.md
+│       ├── create-component-spec/SKILL.md
+│       ├── create-react-page/SKILL.md
+│       ├── create-uni-page/SKILL.md
+│       ├── create-bff-module/SKILL.md
+│       ├── complete-implementation/SKILL.md
+│       ├── fix-bug/SKILL.md
+│       └── health-check/SKILL.md
 │
 ├── docs/
 │   ├── .doc-mode                   # 📋 文档模式标记（solo/team）
@@ -197,18 +196,18 @@ harness-engineering-template/
 │  commitlint         → 提交信息规范               │
 │  CI 门禁            → MR 合并必须全部通过         │
 ├─────────────────────────────────────────────────┤
-│  Layer 3: Windsurf Workflows（AI 行为引导）       │
+│  Layer 3: Windsurf Skills（AI 行为引导）          │
 │                                                 │
-│  new-feature.md     → 功能开发标准流程           │
-│  new-page.md        → 页面生成标准流程           │
-│  fix-bug.md         → Bug 修复标准流程           │
+│  check-context      → 生成前上下文检查           │
+│  create-*-*         → 按规范生成类型/spec/代码    │
+│  fix-bug            → Bug 修复标准流程           │
 ├─────────────────────────────────────────────────┤
 │  Layer 4: 文档同步防护（防止上下文过期）       │
 │                                                 │
 │  docs/SYNC_MAP.md   → 代码-文档声明式映射      │
 │  doc-sync-check.js  → CI 自动检测文档新鲜度    │
 │  PR 模板            → 强制文档确认清单          │
-│  Workflow 步骤      → AI 开发时强制文档同步    │
+│  Skill 步骤         → AI 开发时强制文档同步    │
 └─────────────────────────────────────────────────┘
 ```
 
@@ -221,7 +220,7 @@ harness-engineering-template/
 | 层级 | 机制 | 触发时机 | 强度 |
 |------|------|---------|------|
 | L1 | `docs/SYNC_MAP.md` 声明式映射 | 文件创建时 | 约定 |
-| L2 | Workflow 强制步骤 | AI 开发时 | 引导 |
+| L2 | Skill 强制步骤 | AI 开发时 | 引导 |
 | L3 | PR 模板检查清单 | 代码 Review 时 | 人工 |
 | L4 | `doc-sync-check.js` CI 门禁 | MR 合并前 | 自动 |
 
@@ -260,19 +259,19 @@ node scripts/doc-sync-check.js --strict
 
 编辑 `commitlint.config.js` 中的 `scope-enum` 数组。
 
-### 添加新的 Windsurf Workflow
+### 添加新的 Windsurf Skill
 
-在 `.windsurf/workflows/` 中创建 `.md` 文件：
+在 `.windsurf/skills/{skill-name}/` 中创建 `SKILL.md`：
 
 ```markdown
 ---
-description: 工作流简要描述
+description: Skill 简要描述
 ---
+
+## 步骤
 
 1. 步骤一
 2. 步骤二
-// turbo
-3. 可自动执行的步骤
 ```
 
 ### 运行工程质量检查

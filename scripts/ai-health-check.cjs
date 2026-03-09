@@ -5,7 +5,7 @@
  *
  * 检查维度：
  *   1. AI 规则文件 (.ai-rules.md) 完整性
- *   2. Windsurf Workflows 覆盖度
+ *   2. Windsurf Skills 覆盖度
  *   3. 文档体系（SYNC_MAP、ARCHITECTURE、PROJECT_PLAN 等）
  *   4. 测试覆盖（是否每个包都有测试）
  *   5. 代码质量护栏（commitlint、eslint、prettier、husky）
@@ -130,11 +130,11 @@ function checkAiRules() {
     issues.push('缺少项目特定规则/结构章节');
   }
 
-  // AI 工作流索引
-  if (content.includes('## AI 工作流') || content.includes('Workflow')) {
+  // AI Skills 索引
+  if (content.includes('## AI Skills') || content.includes('Skill')) {
     score += 1;
   } else {
-    issues.push('缺少 AI 工作流索引');
+    issues.push('缺少 AI Skills 索引');
   }
 
   // commit 规范
@@ -162,55 +162,66 @@ function checkAiRules() {
   return { score: Math.max(0, Math.min(score, maxScore)), maxScore, issues };
 }
 
-function checkWorkflows() {
+function checkSkills() {
   const issues = [];
   let score = 0;
   const maxScore = 10;
 
-  const workflowDir = '.windsurf/workflows';
-  if (!fileExists(workflowDir)) {
-    return { score: 0, maxScore, issues: ['.windsurf/workflows/ 目录不存在'] };
+  const skillDir = '.windsurf/skills';
+  if (!fileExists(skillDir)) {
+    return { score: 0, maxScore, issues: ['.windsurf/skills/ 目录不存在'] };
   }
 
-  const workflows = findFiles(workflowDir, /\.md$/);
-  const workflowNames = workflows.map((f) => path.basename(f, '.md'));
+  const skills = findFiles(skillDir, /SKILL\.md$/);
+  const skillNames = skills.map((f) => path.basename(path.dirname(f)));
 
-  // 核心 workflow 检查
-  const requiredWorkflows = ['fix-bug', 'new-feature', 'new-page'];
-  for (const name of requiredWorkflows) {
-    if (workflowNames.includes(name)) {
+  // 核心 skill 检查（最小可落地基线）
+  const requiredSkills = [
+    'check-context',
+    'create-type-definition',
+    'create-page-spec',
+    'create-component-spec',
+    'create-react-page',
+    'create-uni-page',
+    'create-bff-module',
+    'complete-implementation',
+    'fix-bug',
+    'health-check',
+  ];
+  for (const name of requiredSkills) {
+    if (skillNames.includes(name)) {
       score += 1.5;
     } else {
-      issues.push(`缺少核心 workflow: ${name}.md`);
+      issues.push(`缺少核心 skill: ${name}/SKILL.md`);
     }
   }
 
-  // 额外 workflow 加分（每个 0.5，上限 2 分）
-  const extraWorkflows = workflowNames.filter(
-    (n) => !requiredWorkflows.includes(n) && !n.startsWith('_'),
+  // 额外 skill 加分（每个 0.5，上限 2 分）
+  const extraSkills = skillNames.filter(
+    (n) => !requiredSkills.includes(n) && !n.startsWith('_'),
   );
-  score += Math.min(extraWorkflows.length * 0.5, 2);
+  score += Math.min(extraSkills.length * 0.5, 2);
 
-  // workflow 格式检查：每个 workflow 应有 frontmatter description
+  // skill 格式检查：每个 skill 应有 frontmatter description
   let formatOk = 0;
-  for (const wf of workflows) {
-    const content = fs.readFileSync(wf, 'utf-8');
+  for (const skill of skills) {
+    const content = fs.readFileSync(skill, 'utf-8');
     if (content.startsWith('---') && content.includes('description:')) {
       formatOk++;
     } else {
-      issues.push(`${path.basename(wf)} 缺少 YAML frontmatter (description)`);
+      issues.push(`${path.basename(path.dirname(skill))} 缺少 YAML frontmatter (description)`);
     }
   }
-  if (workflows.length > 0) {
-    score += (formatOk / workflows.length) * 1.5;
+  if (skills.length > 0) {
+    score += (formatOk / skills.length) * 1.5;
   }
 
-  // CONTRIBUTING.md 中是否列出了 workflows
+  // CONTRIBUTING.md 中是否列出了 skills
   const contributing = readFile('CONTRIBUTING.md');
-  if (contributing.includes('/new-feature') && contributing.includes('/fix-bug')) {
+  if (contributing.includes('check-context') && contributing.includes('create-page-spec')) {
     score += 1;
   } else {
-    issues.push('CONTRIBUTING.md 中未列出 AI 工作流');
+    issues.push('CONTRIBUTING.md 中未列出 AI Skills');
   }
 
   return { score: Math.min(score, maxScore), maxScore, issues };
@@ -523,7 +534,7 @@ function checkSyncMap() {
 function main() {
   const checks = {
     'AI 规则文件': checkAiRules(),
-    'Windsurf Workflows': checkWorkflows(),
+    'Windsurf Skills': checkSkills(),
     文档体系: checkDocs(),
     测试覆盖: checkTests(),
     代码质量护栏: checkQualityGuardrails(),

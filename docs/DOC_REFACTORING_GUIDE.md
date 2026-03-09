@@ -12,7 +12,7 @@
 | **职责边界模糊** | 开发流程、设计协作、协作规范混在一起 | 新手难以快速定位信息 |
 | **文档过长** | README 超过 10KB，包含所有内容 | 新手需要 30 分钟才能理解全貌 |
 | **分层不清** | 没有快速开始指南，所有内容都在 README | 新手上手困难 |
-| **Workflows/Skills 说明不足** | 只有简单列表，缺少详细说明和使用示例 | 开发者不知道何时使用哪个 Workflow |
+| **Skills 说明不足** | 只有简单列表，缺少详细说明和使用示例 | 开发者不知道何时使用哪个 Skill |
 
 ### 诊断方法
 
@@ -25,14 +25,14 @@ wc -l README.md
 # 检查文档结构
 find docs -name "*.md" -type f | wc -l
 
-# 检查 Workflows 说明
-grep -r "description:" .windsurf/workflows/
+# 检查 Skills 说明
+grep -r "description:" .windsurf/skills/
 ```
 
 **目标**：
 - README < 500 行（5 分钟阅读）
 - 至少 3 个分层文档（QUICK_START + DEVELOPMENT + 专题指南）
-- 每个 Workflow 都有详细说明和使用示例
+- 每个 Skill 都有详细说明和使用示例
 
 ---
 
@@ -43,8 +43,7 @@ grep -r "description:" .windsurf/workflows/
 ```
 README.md（5 分钟）
 ├── 项目概览
-├── Workflows 完整说明表（9 个）
-├── Skills 完整说明表（7 个）
+├── Skills 完整说明表（10 个）
 └── 文档导航
 
 docs/QUICK_START.md（10 分钟）
@@ -52,7 +51,7 @@ docs/QUICK_START.md（10 分钟）
 ├── 克隆项目
 ├── 安装依赖
 ├── 配置环境变量
-├── AI 配置（Windsurf Memory + Workflows）
+├── AI 配置（Windsurf Memory + Skills）
 ├── 开发第一个功能
 └── 常见问题
 
@@ -92,7 +91,7 @@ done
 从现有 README 中提取：
 - 项目概览（保留）
 - 快速开始（移到 QUICK_START.md）
-- Workflows/Skills 说明（补充完整表格）
+- Skills 说明（补充完整表格）
 - 模板结构（保留）
 - 四层护栏架构（保留）
 - 文档同步机制（移到 DEVELOPMENT.md）
@@ -103,7 +102,7 @@ done
 包含：
 - 前置要求
 - 5 分钟快速上手（克隆 → 初始化 → 配置 AI）
-- 所有 Workflows 的使用示例
+- Skills 使用示例
 - 常见问题和解决方案
 
 #### 步骤 4: 创建 DEVELOPMENT.md
@@ -120,20 +119,13 @@ done
 - 分支规范
 - 提交规范
 - MR 流程
-- AI Workflows 简要列表（详细说明在 README）
+- AI Skills 简要列表（详细说明在 README）
 
-#### 步骤 6: 补充 Workflows/Skills 说明
+#### 步骤 6: 补充 Skills 说明
 
 在 README 中添加完整的表格：
 
 ```markdown
-### Workflows（工作流）
-
-| 命令 | 用途 | 适用场景 |
-|------|------|---------|
-| `/new-feature` | 开发新功能 | 从类型定义 → Page Spec → 代码 → 测试 |
-| ... |
-
 ### Skills（技能）
 
 | Skill | 用途 | 何时调用 |
@@ -183,13 +175,13 @@ README（14KB）→ 需要 30 分钟理解全貌
 ```
 README（5 分钟）→ QUICK_START（10 分钟）→ 开始开发
   ├── 项目概览
-  ├── Workflows/Skills 完整表
+  ├── Skills 完整表
   └── 文档导航
 
 QUICK_START（10 分钟）
   ├── 前置要求
   ├── 5 分钟快速上手
-  ├── Workflows 使用示例
+  ├── Skills 使用示例
   └── 常见问题
 
 DEVELOPMENT（30 分钟，按需阅读）
@@ -214,7 +206,7 @@ DEVELOPMENT（30 分钟，按需阅读）
 
 **保留内容**：
 - 项目概览（Harness Engineering 核心）
-- Workflows/Skills 完整说明表
+- Skills 完整说明表
 - 文档导航
 - 模板结构
 - 四层护栏架构
@@ -230,7 +222,7 @@ DEVELOPMENT（30 分钟，按需阅读）
 **QUICK_START.md**：
 - 环境配置详细步骤
 - 第一个功能开发
-- Workflows 使用示例
+- Skills 使用示例
 - 常见问题和解决方案
 
 **DEVELOPMENT.md**：
@@ -239,14 +231,14 @@ DEVELOPMENT（30 分钟，按需阅读）
 - 文档同步机制
 - 团队协作规范
 
-### 3. Workflows/Skills 说明（用户反馈）
+### 3. Skills 说明（用户反馈）
 
 **问题**：CONTRIBUTING.md 中只有简单列表，缺少详细说明
 
 **解决**：
-- 在 README 中添加完整的表格（命令 + 用途 + 适用场景）
-- 在 QUICK_START.md 中添加使用示例
-- 每个 Workflow 文件中保留详细说明
+- 在 README 中添加完整的 Skill 表格（名称 + 用途 + 适用场景）
+- 在 QUICK_START.md 中添加 Skill 链路示例
+- 每个 Skill 文件中保留详细说明
 
 ### 4. 文档导航（新增）
 
@@ -265,9 +257,9 @@ DEVELOPMENT（30 分钟，按需阅读）
 - [ ] 从 README 中提取内容到 QUICK_START.md
 - [ ] 创建 DEVELOPMENT.md（整合开发流程）
 - [ ] 精简 CONTRIBUTING.md（只保留协作规范）
-- [ ] 在 README 中添加 Workflows/Skills 完整表
+- [ ] 在 README 中添加 Skills 完整表
 - [ ] 在 README 中添加文档导航表
-- [ ] 在 QUICK_START.md 中添加 Workflows 使用示例
+- [ ] 在 QUICK_START.md 中添加 Skills 使用示例
 - [ ] 在每个文档中添加"下一步"链接
 - [ ] 验证新手上手时间（目标 15 分钟）
 - [ ] 提交 MR，标题：`docs: refactor documentation structure for better onboarding`
@@ -283,7 +275,7 @@ DEVELOPMENT（30 分钟，按需阅读）
 | 上手时间 | 30 分钟 | 15 分钟 | **50% 减少** |
 | 文档字数 | ~24000 | ~11000 | **54% 减少** |
 | 文档数量 | 2 个 | 5 个 | 更清晰的分层 |
-| Workflows 说明 | 简单列表 | 完整表格 + 示例 | 更易理解 |
+| Skills 说明 | 简单列表 | 完整表格 + 示例 | 更易理解 |
 
 ### 维护成本降低
 
@@ -322,7 +314,7 @@ DEVELOPMENT（30 分钟，按需阅读）
 
 **A**：
 1. 让新成员按照新文档上手，计时
-2. 运行 `/health-check` 检查工程质量
+2. 运行 `pnpm health-check` 检查工程质量
 3. 对比重构前后的上手时间
 
 ### Q4: 需要多长时间完成重构？

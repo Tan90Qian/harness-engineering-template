@@ -21,15 +21,15 @@
 
 ### 1. 需求分析
 
-确定需求类型，选择对应 Workflow：
+确定需求类型，选择对应 Skill 链路：
 
-| 需求类型 | Workflow | 说明 |
-|---------|----------|------|
-| 新功能 | `/new-feature` | 从类型定义 → Page Spec → 代码 → 测试 |
-| 新页面 | `/new-page` | 上下文检查 → 生成页面 → 更新路由 |
-| 新组件 | `/new-component` | 生成 Component Spec + 组件代码 |
-| Bug 修复 | `/fix-bug` | 定位根因 → 最小修复 → 回归测试 |
-| 补全实现 | `/complete` | 对比 spec 补全缺失组件/功能 |
+| 需求类型 | Skill 链路 | 说明 |
+|---------|------------|------|
+| 新功能 | `check-context` → `create-type-definition` → `create-page-spec` → `create-*-page/create-bff-module` | 从类型定义到实现的完整链路 |
+| 新页面 | `check-context` → `create-page-spec` → `create-react-page/create-uni-page` | 上下文检查后生成页面并更新路由 |
+| 新组件 | `check-context` → `create-component-spec` → `complete-implementation` | 先规格再实现 |
+| Bug 修复 | `fix-bug` | 定位根因 → 最小修复 → 回归验证 |
+| 补全实现 | `complete-implementation` | 对比 spec 补全缺失组件/功能 |
 
 ### 2. 准备上下文
 
@@ -43,8 +43,8 @@
 **创建 Page Spec**：
 
 ```bash
-# 方式 1: 使用 Workflow（推荐）
-/new-page
+# 方式 1: 使用 Skill（推荐）
+# 按顺序触发：check-context -> create-page-spec
 # 按提示输入页面信息，AI 自动生成 Spec
 
 # 方式 2: 手动创建
@@ -94,10 +94,8 @@ pnpm test:e2e
 
 ### 6. 提交
 
-**使用 Workflow 生成规范提交信息**：
-```bash
-/git-commit
-```
+**使用 Skill 生成规范提交信息**：
+`git-commit`
 
 **手动提交**：
 ```bash
@@ -193,7 +191,7 @@ src/types/{module}.ts  →  业务代码
 | 层级 | 机制 | 触发时机 | 强度 |
 |------|------|---------|------|
 | L1 | `docs/SYNC_MAP.md` 声明式映射 | 文件创建时 | 约定 |
-| L2 | Workflow 强制步骤 | AI 开发时 | 引导 |
+| L2 | Skill 强制步骤 | AI 开发时 | 引导 |
 | L3 | PR 模板检查清单 | 代码 Review 时 | 人工 |
 | L4 | `doc-sync-check.js` CI 门禁 | MR 合并前 | 自动 |
 
@@ -283,7 +281,7 @@ node scripts/doc-sync-check.js --strict
 
 1. CI 自动运行 `doc-sync-check` 检查
 2. MR Review 时检查 Page Spec 是否更新
-3. 使用 `/health-check` 定期评分
+3. 使用 `pnpm health-check` 定期评分
 
 ---
 

@@ -55,47 +55,33 @@ node scripts/setup.js
 如果存在，必须在开始工作前读取并严格遵循其中的规则。
 ```
 
-### 3.2 可用的 Workflows
+### 3.2 可用 Skills（Skill-only）
 
-配置完成后，可以使用以下 Workflows：
+配置完成后，统一使用 Skills：
 
-#### 开发类 Workflows
-
-| 命令 | 用途 | 使用示例 |
-|------|------|---------|
-| `/new-feature` | 开发新功能 | `/new-feature` → 输入功能名称 → AI 引导完整流程 |
-| `/new-page` | 开发新页面 | `/new-page` → 输入页面名称 → 自动生成 |
-| `/new-component` | 创建业务组件 | `/new-component` → 输入组件信息 → 生成 Component Spec |
-| `/complete` | 完善现有实现 | `/complete` → 指定 Spec 文档 → 补全缺失功能 |
-| `/fix-bug` | 修复 Bug | `/fix-bug` → 描述 Bug → AI 定位根因并修复 |
-
-#### 工具类 Workflows
-
-| 命令 | 用途 | 使用示例 |
-|------|------|---------|
-| `/git-commit` | 规范提交 | `/git-commit` → AI 分析变更并生成规范提交信息 |
-| `/health-check` | 工程质量评分 | `/health-check` → 输出评分和待改进项 |
-| `/doc-workflow` | 文档工作流 | 自动检测文档模式并执行对应检查 |
-| `/switch-to-team-mode` | 切换团队模式 | 一键切换到团队模式（不可逆） |
-
-#### Skills（自动调用）
-
-以下 Skills 会被 AI 自动调用，无需手动触发：
-
-- `check-context`：开发前检查上下文完整性
-- `create-type-definition`：创建类型定义
-- `create-page-spec`：创建 Page Spec
-- `generate-spec-from-figma`：Figma MCP 自动填充（可选）
+| Skill | 用途 |
+|------|------|
+| `check-context` | 开发前上下文检查 |
+| `create-type-definition` | 创建/更新类型定义 |
+| `create-page-spec` | 创建 Page Spec |
+| `create-component-spec` | 创建 Component Spec |
+| `create-react-page` | 生成 React 页面 |
+| `create-uni-page` | 生成 uni-app 页面 |
+| `create-bff-module` | 生成 BFF 模块 |
+| `complete-implementation` | 对照 spec 补全实现 |
+| `fix-bug` | 根因定位 + 最小修复 |
+| `health-check` | 工程质量评分 |
 
 ## 4. 开发第一个功能（3 分钟）
 
 ### 场景：添加一个新页面
 
-使用 AI Workflow 快速生成页面：
+使用 Skill 链路快速生成页面：
 
-```
-/new-page
-```
+1. `check-context`
+2. `create-page-spec`
+3. `create-type-definition`
+4. `create-react-page` 或 `create-uni-page`
 
 AI 会询问：
 - 页面名称：如"用户列表"
@@ -109,7 +95,7 @@ AI 会自动：
 
 ### 手动开发流程
 
-如果不使用 AI Workflow，按以下步骤：
+如果不使用 AI 生成，按以下步骤：
 
 1. **创建类型定义**（`src/types/user.ts`）
 2. **创建 Page Spec**（`docs/pages/user/user-list.spec.md`）
@@ -131,7 +117,7 @@ pnpm lint
 pnpm test
 
 # AI 工程质量评分
-/health-check
+pnpm health-check
 ```
 
 ## 常见问题
@@ -182,5 +168,5 @@ pnpm typecheck
 ## 获取帮助
 
 - 项目文档：`docs/` 目录
-- AI Workflows：输入 `/` 查看所有可用命令
+- AI Skills：查看 `.windsurf/skills/*/SKILL.md`
 - 问题反馈：提交 Issue 或 PR

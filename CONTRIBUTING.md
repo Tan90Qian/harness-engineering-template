@@ -64,17 +64,22 @@ CI 流水线额外检查：
 
 ## AI 辅助开发
 
-### Windsurf Workflows
+### Windsurf Skills（Skill-only）
 
-在 Windsurf 中使用 `/` 命令调用工作流：
+本模板不保留 Workflow 入口，统一使用 Skills。
 
-- `/new-feature` — 开发新功能（从 spec 到测试）
-- `/new-page` — 开发新页面
-- `/fix-bug` — 修复 Bug
-- `/git-commit` — 编写规范的 git commit 信息（英文 Header + 中文 Body）
-- `/health-check` — 运行 AI 工程化健壮性检查（评分 + 待改进项）
-- `/doc-workflow` — 文档工作流（支持单人/团队模式）
-- `/switch-to-team-mode` — 切换到团队模式（不可逆）
+最小可落地 Skill 列表：
+
+- `check-context` — 开发前上下文检查
+- `create-type-definition` — 创建/更新类型定义
+- `create-page-spec` — 创建页面 Spec
+- `create-component-spec` — 创建组件 Spec
+- `create-react-page` — 生成 React 页面
+- `create-uni-page` — 生成 uni-app 页面
+- `create-bff-module` — 生成 BFF 模块
+- `complete-implementation` — 对照 Spec 补全实现
+- `fix-bug` — 根因定位与最小修复
+- `health-check` — 工程化健壮性检查
 
 ### Page Spec
 
